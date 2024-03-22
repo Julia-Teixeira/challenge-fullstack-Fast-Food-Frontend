@@ -5,7 +5,7 @@ import Link from "next/link";
 const CardProduct = ({ product }: { product: TProduct }) => {
   return (
     <Link href={`/`}>
-      <li className="flex gap-4 flex-col items-center bg-red-500 max-w-48 w-full h-56 rounded-xl shadow-md">
+      <li className="flex gap-4 flex-col items-center bg-red-500 max-w-48 w-full h-56 rounded-xl shadow-md hover:shadow-inner">
         <div className="relative h-16 w-full">
           <Image
             src={product.imgCover}
