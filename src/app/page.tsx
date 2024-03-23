@@ -4,15 +4,25 @@ import ModalAddOrder from "@/components/modalAddOrder";
 import ProductList from "@/components/productList";
 import Search from "@/components/search";
 import { useProduct } from "@/provider/productProvider";
-import { TProductOrder } from "@/provider/productProvider/interface";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const { isOpenModal, productOrder, products, setProductOrder } = useProduct();
+  const {
+    isOpenModal,
+    productOrder,
+    products,
+    setProductOrder,
+    deleteProductOrder,
+  } = useProduct();
+
+  const router = useRouter();
 
   const cancelOrder = () => {
+    productOrder?.map(async (item) => await deleteProductOrder(item.id));
     setProductOrder([]);
   };
 
+  console.log(productOrder);
   return (
     <div className="flex flex-col ">
       <h1 className="text-3xl font-bold text-black pt-20">Seja bem vindo!</h1>
@@ -58,16 +68,17 @@ export default function Home() {
 
       <div className="w-full flex gap-8 justify-end mt-4">
         <button
-          onClick={cancelOrder}
+          onClick={() => cancelOrder()}
           type="button"
-          disabled={!productOrder && true}
-          className="w-64 border-2 border-[#125C13] outline-none rounded-2xl py-2 text-[#125C13] disabled:text-[#9F9F9F] font-semibold"
+          disabled={productOrder?.length === 0 && true}
+          className="w-64 border-2 border-[#125C13] outline-none rounded-2xl py-2 text-[#125C13] disabled:text-[#9F9F9F] disabled:border-[#9F9F9F] font-semibold"
         >
           Cancelar
         </button>
         <button
+          onClick={() => router.push("/payments")}
           type="button"
-          disabled={!productOrder && true}
+          disabled={productOrder?.length === 0 && true}
           className="w-64 border-2 outline-none rounded-2xl py-2 bg-[#125C13] disabled:bg-[#9F9F9F] text-white font-semibold"
         >
           Finalizar Pedido
