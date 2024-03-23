@@ -71,4 +71,5 @@ export interface ProductContextValues {
     React.SetStateAction<TProductOrder[] | undefined>
   >;
   createProductOrder: (formData: TProductOrderFormData) => Promise<void>;
+  deleteProductOrder: (id: number) => Promise<void>;
 }

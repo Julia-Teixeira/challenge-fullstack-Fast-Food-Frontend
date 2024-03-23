@@ -59,8 +59,17 @@ export const ProductProvider = ({
 
   const createProductOrder = async (formData: TProductOrderFormData) => {
     const { data } = await api.post<TProductOrder>("/productOrders", formData);
-    console.log(data);
+
     setProductOrder([...productOrder!, data]);
+  };
+
+  const deleteProductOrder = async (id: number) => {
+    await api
+      .delete(`/productOrders/${id}`)
+
+      .catch((error: AxiosError) => {
+        console.error(error);
+      });
   };
 
   useEffect(() => {
@@ -92,6 +101,7 @@ export const ProductProvider = ({
         createProductOrder,
         productOrder,
         setProductOrder,
+        deleteProductOrder,
       }}
     >
       {" "}
