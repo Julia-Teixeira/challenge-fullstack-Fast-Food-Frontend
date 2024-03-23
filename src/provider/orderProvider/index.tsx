@@ -32,6 +32,11 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
     setIsOpenModal(true);
   };
 
+  const getAllOrders = async () => {
+    const { data } = await api.get<TOrder[]>("/orders");
+    setOrders(data);
+  };
+
   const openModal = () => {
     setIsOpenModal(true);
   };
@@ -41,12 +46,23 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
     route.push("/");
   };
 
+  const changeStatusOrder = async (id: number, status: string) => {
+    await api
+      .patch(`/orders/${id}`, { status })
+      .then(async () => {
+        await getAllOrders();
+      })
+      .catch((error: AxiosError) => {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
     (async () => {
       await getCountOrder();
+      await getAllOrders();
     })();
   }, [orders]);
-
   return (
     <OrderContext.Provider
       value={{
@@ -56,6 +72,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
         isOpenModal,
         openModal,
         closeModal,
+        changeStatusOrder,
       }}
     >
       {children}

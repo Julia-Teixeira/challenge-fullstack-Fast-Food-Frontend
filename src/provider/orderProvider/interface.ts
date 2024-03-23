@@ -4,8 +4,21 @@ export const orderSchema = z.object({
   id: z.number(),
   nameCostumer: z.string(),
   status: z.string(),
+  code: z.number(),
   total: z.number(),
   createdAt: z.date(),
+  productOrder: z.array(
+    z.object({
+      id: z.number(),
+      amount: z.number(),
+      note: z.string().nullish(),
+      product: z.object({
+        id: z.number(),
+        name: z.string(),
+        imgCover: z.string(),
+      }),
+    })
+  ),
 });
 
 const createOrderSchema = orderSchema
@@ -35,4 +48,7 @@ export type OrderContextValues = {
   isOpenModal: boolean;
   openModal: () => void;
   closeModal: () => void;
+  // getAllOrders: () => Promise<void>;
+  // deleteOrder: (id: number) => Promise<void>;
+  changeStatusOrder: (id: number, status: string) => Promise<void>;
 };
