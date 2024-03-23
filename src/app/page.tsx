@@ -22,7 +22,6 @@ export default function Home() {
     setProductOrder([]);
   };
 
-  console.log(productOrder);
   return (
     <div className="flex flex-col ">
       <h1 className="text-3xl font-bold text-black pt-20">Seja bem vindo!</h1>
