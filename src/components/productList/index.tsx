@@ -1,6 +1,7 @@
 "use client";
 import { useProduct } from "@/provider/productProvider";
 import CardProduct from "./cardProduct";
+import { SetStateAction } from "react";
 
 const ProductList = () => {
   const { products, selectedProducts } = useProduct();

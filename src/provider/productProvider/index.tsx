@@ -5,7 +5,14 @@ import api from "@/service/api";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { ProductContextValues, TCategoryList, TProduct } from "./interface";
+import {
+  ProductContextValues,
+  TAdditionalList,
+  TCategoryList,
+  TProduct,
+  TProductOrder,
+  TProductOrderFormData,
+} from "./interface";
 
 export const ProductContext = createContext({} as ProductContextValues);
 
@@ -20,11 +27,19 @@ export const ProductProvider = ({
 }) => {
   const [products, setProducts] = useState<TProduct[] | undefined>([]);
   const [categories, setCategories] = useState<TCategoryList[] | undefined>([]);
+  const [additionalProducts, setAdditionalProducts] = useState<
+    TAdditionalList[] | undefined
+  >([]);
   const [selectedProducts, setSelectedProducts] = useState<
     TProduct[] | undefined
   >([]);
   const [search, setSearch] = useState<TProduct[] | undefined>([]);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [selectdProduct, setSelectedProduct] = useState<TProduct | undefined>();
   const [isLoading, setIsLoading] = useState(true);
+  const [productOrder, setProductOrder] = useState<TProductOrder[] | undefined>(
+    []
+  );
   const router = useRouter();
 
   const getProducts = async () => {
@@ -37,10 +52,22 @@ export const ProductProvider = ({
     setCategories(data);
   };
 
+  const getAllAdditionalProducts = async () => {
+    const { data } = await api.get<TAdditionalList[]>("/products/additional");
+    setAdditionalProducts(data);
+  };
+
+  const createProductOrder = async (formData: TProductOrderFormData) => {
+    const { data } = await api.post<TProductOrder>("/productOrders", formData);
+    console.log(data);
+    setProductOrder([...productOrder!, data]);
+  };
+
   useEffect(() => {
     (async () => {
       await getAllCategories();
       await getProducts();
+      await getAllAdditionalProducts();
     })();
   }, []);
 
@@ -57,6 +84,14 @@ export const ProductProvider = ({
         selectedProducts,
         search,
         setSearch,
+        isOpenModal,
+        setIsOpenModal,
+        selectdProduct,
+        setSelectedProduct,
+        additionalProducts,
+        createProductOrder,
+        productOrder,
+        setProductOrder,
       }}
     >
       {" "}

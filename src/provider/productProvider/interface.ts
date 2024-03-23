@@ -18,8 +18,33 @@ export const categoryListSchema = z.object({
   product: z.array(productSchema),
 });
 
+export const additionalListSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  imgCover: z.string(),
+  createdAt: z.date(),
+  description: z.string().nullish(),
+  price: z.string(),
+  type: z.string(),
+});
+
+export const productOrderFormDataSchema = z.object({
+  productId: z.number(),
+  amount: z.number(),
+  note: z.string().nullish(),
+  total: z.number(),
+  additionalIds: z.array(z.number()).nullish(),
+});
+
+export const productOrderSchema = productOrderFormDataSchema.extend({
+  id: z.number(),
+});
+
 export type TProduct = z.infer<typeof productSchema>;
 export type TCategoryList = z.infer<typeof categoryListSchema>;
+export type TAdditionalList = z.infer<typeof additionalListSchema>;
+export type TProductOrder = z.infer<typeof productOrderSchema>;
+export type TProductOrderFormData = z.infer<typeof productOrderFormDataSchema>;
 
 export interface ProductContextValues {
   products: TProduct[] | undefined;
@@ -34,4 +59,16 @@ export interface ProductContextValues {
   >;
   search: TProduct[] | undefined;
   setSearch: React.Dispatch<React.SetStateAction<TProduct[] | undefined>>;
+  isOpenModal: boolean;
+  setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  selectdProduct: TProduct | undefined;
+  setSelectedProduct: React.Dispatch<
+    React.SetStateAction<TProduct | undefined>
+  >;
+  additionalProducts: TAdditionalList[] | undefined;
+  productOrder: TProductOrder[] | undefined;
+  setProductOrder: React.Dispatch<
+    React.SetStateAction<TProductOrder[] | undefined>
+  >;
+  createProductOrder: (formData: TProductOrderFormData) => Promise<void>;
 }
