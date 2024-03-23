@@ -4,7 +4,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import api from "@/service/api";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import {
   ProductContextValues,
   TAdditionalList,
