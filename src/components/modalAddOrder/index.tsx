@@ -1,6 +1,5 @@
 "use client";
 import { useProduct } from "@/provider/productProvider";
-import { TProductOrderFormData } from "@/provider/productProvider/interface";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -19,6 +18,10 @@ const ModalAddOrder = () => {
 
   const [quantity, setQuantity] = useState(1);
 
+  const [additionalList, setAdditional] = useState<
+    { id: number; price: string; name: string }[] | undefined
+  >([]);
+
   const closeModal = () => {
     setSelectedProduct(undefined);
     setIsOpenModal(false);
@@ -31,6 +34,19 @@ const ModalAddOrder = () => {
     setQuantity(quantity - 1);
   };
 
+  const handleSelectAdditional = (data: {
+    id: number;
+    price: string;
+    name: string;
+  }) => {
+    if (additionalList?.some((item) => item.id === data.id)) {
+      const filtered = additionalList?.filter((item) => item.id !== data.id);
+      setAdditional(filtered);
+    } else {
+      setAdditional([...additionalList!, data]);
+    }
+  };
+
   const onSubmit = async (data: any) => {
     let productOrder: any = {};
     if (data.additional) {
@@ -38,8 +54,11 @@ const ModalAddOrder = () => {
         productId: selectdProduct!.id,
         amount: quantity,
         note: data.note,
-        total: quantity * Number(selectdProduct!.price),
         additionalIds: data.additional.map((item: string) => Number(item)),
+        total:
+          quantity * Number(selectdProduct!.price) +
+          (additionalList?.reduce((acc, curr) => acc + Number(curr.price), 0) ||
+            0),
       };
     } else {
       productOrder = {
@@ -151,6 +170,13 @@ const ModalAddOrder = () => {
                     </p>
                     <input
                       {...register(`additional`)}
+                      onChange={() =>
+                        handleSelectAdditional({
+                          id: additional.id,
+                          price: additional.price,
+                          name: additional.name,
+                        })
+                      }
                       type="checkbox"
                       title={additional.name}
                       value={additional.id}
@@ -191,19 +217,37 @@ const ModalAddOrder = () => {
             </span>
           </p>
 
+          {additionalList?.map((item) => (
+            <p
+              key={item?.id}
+              className="w-full flex justify-between text-xs font-mono text-gray-800"
+            >
+              <span>1x {item?.name}</span>
+              <span>
+                {Number(item?.price).toLocaleString(`pt-BR`, {
+                  style: `currency`,
+                  currency: `BRL`,
+                })}
+              </span>
+            </p>
+          ))}
+
           <div>
             <div className="border-dashed border-[1px] border-gray-300 w-full" />
             <p className="w-full flex justify-between text-xs font-mono text-gray-800 mt-2">
               Total do pedido:
             </p>
             <span className="font-bold text-2xl font-sans text-gray-800">
-              {(Number(selectdProduct?.price) * quantity).toLocaleString(
-                `pt-BR`,
-                {
-                  style: `currency`,
-                  currency: `BRL`,
-                }
-              )}
+              {(
+                Number(selectdProduct?.price) * quantity +
+                (additionalList?.reduce(
+                  (acc, item) => acc + Number(item.price),
+                  0
+                ) || 0)
+              ).toLocaleString(`pt-BR`, {
+                style: `currency`,
+                currency: `BRL`,
+              })}
             </span>
           </div>
         </div>
