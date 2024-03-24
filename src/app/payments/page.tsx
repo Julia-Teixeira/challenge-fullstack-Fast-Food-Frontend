@@ -11,6 +11,7 @@ import ModalOrderFinished from "@/components/modalOrderFinished";
 const PaymentPage = () => {
   const { productOrder, products } = useProduct();
   const { createOrder, countOrder, isOpenModal } = useOrder();
+  const router = useRouter();
 
   const [total, setTotal] = useState(0);
   const [typePayment, setTypePayment] = useState<"inCash" | "credit" | "debit">(
@@ -74,28 +75,61 @@ const PaymentPage = () => {
           <div className="w-[40%]">
             <p className="text-xs font-bold mt-6">Resumo da compra</p>
             {productOrder?.length !== 0 && (
-              <div className="w-full flex flex-col gap-8 mt-2 p-4 border border-[#9F9F9F] rounded-md">
+              <div className="w-full flex flex-col gap-6 mt-2 p-4 border border-[#9F9F9F] rounded-md">
                 {productOrder?.map((item) => (
-                  <p className="w-full flex justify-between text-xs font-mono text-gray-800">
-                    <span>
-                      {item.amount}x{" "}
-                      {
-                        products?.find(
-                          (product) => product.id === item.productId
-                        )?.name
-                      }
-                    </span>
-                    {/* {item.additionalIds?.length !== 0 &&
-                    item.additionalIds!.map((additional) => (
-                      <span>{additional}</span>
-                    ))} */}
-                    <span>
-                      {Number(item.total).toLocaleString(`pt-BR`, {
-                        style: `currency`,
-                        currency: `BRL`,
-                      })}
-                    </span>
-                  </p>
+                  <div key={item.id}>
+                    <p className="w-full flex justify-between text-xs font-mono text-gray-800">
+                      <span>
+                        {item.amount}x{" "}
+                        {
+                          products?.find(
+                            (product) => product.id === item.productId
+                          )?.name
+                        }
+                      </span>
+                      <span>
+                        {Number(item.total).toLocaleString(`pt-BR`, {
+                          style: `currency`,
+                          currency: `BRL`,
+                        })}
+                      </span>
+                    </p>
+                    <div>
+                      {item?.additionalIds?.length! > 0 && (
+                        <span className="text-xs font-mono text-gray-800 ml-5">
+                          Adicionais:
+                        </span>
+                      )}
+                      {item.additionalIds?.map((add) => (
+                        <p
+                          key={add.id}
+                          className="w-full flex justify-between text-xs font-mono text-gray-800 pl-6"
+                        >
+                          <span>
+                            - {add.name} - {add.description}
+                          </span>
+                          <span>
+                            {Number(add.price).toLocaleString(`pt-BR`, {
+                              style: `currency`,
+                              currency: `BRL`,
+                            })}
+                          </span>
+                        </p>
+                      ))}
+                    </div>
+                    {item?.note && (
+                      <div>
+                        <p className="flex flex-col gap-1">
+                          <span className="text-xs font-mono text-gray-800 ml-5">
+                            Observação:
+                          </span>
+                          <span className="text-xs font-mono text-gray-800 ml-6">
+                            {item.note}
+                          </span>
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 ))}
 
                 <div>
@@ -162,6 +196,7 @@ const PaymentPage = () => {
               >
                 <input
                   onChange={() => setTypePayment("debit")}
+                  checked={typePayment === "debit"}
                   type="radio"
                   id="debit"
                   name="payment"
@@ -199,6 +234,7 @@ const PaymentPage = () => {
               >
                 <input
                   onChange={() => setTypePayment("credit")}
+                  checked={typePayment === "credit"}
                   type="radio"
                   id="credit"
                   name="payment"
@@ -237,12 +273,12 @@ const PaymentPage = () => {
               >
                 <input
                   onChange={() => setTypePayment("inCash")}
+                  checked={typePayment === "inCash"}
                   type="radio"
                   id="inCash"
                   name="payment"
                   title={"inCash"}
                   value={"inCash"}
-                  checked
                   className="before:content[''] peer relative h-4 w-4 cursor-pointer
                    appearance-none rounded-full border border-[#125C13] text-[#125C13]
                    transition-all checked:border-[#125C13] checked:before:bg-[#125C13]
@@ -318,6 +354,7 @@ const PaymentPage = () => {
 
         <div className="w-full flex gap-8 justify-end mt-24 text-xs">
           <button
+            onClick={() => router.back()}
             type="button"
             className="w-[200px] border outline-none rounded-xl py-2 px-6 border-[#125C13]  text-[#125C13] font-semibold"
           >
