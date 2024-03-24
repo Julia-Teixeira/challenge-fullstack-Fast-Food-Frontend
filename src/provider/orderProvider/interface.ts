@@ -12,6 +12,16 @@ export const orderSchema = z.object({
       id: z.number(),
       amount: z.number(),
       note: z.string().nullish(),
+      additionalIds: z
+        .array(
+          z.object({
+            id: z.number(),
+            name: z.string(),
+            description: z.string(),
+            price: z.string(),
+          })
+        )
+        .nullish(),
       product: z.object({
         id: z.number(),
         name: z.string(),
@@ -19,10 +29,24 @@ export const orderSchema = z.object({
       }),
     })
   ),
+  payment: z.array(
+    z.object({
+      id: z.number(),
+      type: z.string(),
+      change: z.string(),
+      total: z.string(),
+    })
+  ),
 });
 
 const createOrderSchema = orderSchema
-  .omit({ id: true, status: true, createdAt: true })
+  .omit({
+    id: true,
+    status: true,
+    createdAt: true,
+    productOrder: true,
+    payment: true,
+  })
   .extend({
     code: z.number(),
     productOrder: z.array(z.number()),
@@ -48,7 +72,7 @@ export type OrderContextValues = {
   isOpenModal: boolean;
   openModal: () => void;
   closeModal: () => void;
-  // getAllOrders: () => Promise<void>;
-  // deleteOrder: (id: number) => Promise<void>;
+  printOrder: (dataId: number) => void;
   changeStatusOrder: (id: number, status: string) => Promise<void>;
+  deleteOrder: (id: number) => Promise<void>;
 };
