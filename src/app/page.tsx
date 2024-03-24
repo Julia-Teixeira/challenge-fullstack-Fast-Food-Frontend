@@ -5,6 +5,7 @@ import ProductList from "@/components/productList";
 import Search from "@/components/search";
 import { useProduct } from "@/provider/productProvider";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
   const {
@@ -13,6 +14,8 @@ export default function Home() {
     products,
     setProductOrder,
     deleteProductOrder,
+    getProducts,
+    getAllCategories,
   } = useProduct();
 
   const router = useRouter();
@@ -21,6 +24,13 @@ export default function Home() {
     productOrder?.map(async (item) => await deleteProductOrder(item.id));
     setProductOrder([]);
   };
+
+  useEffect(() => {
+    (async () => {
+      await getProducts();
+      await getAllCategories();
+    })();
+  }, []);
 
   return (
     <div className="flex flex-col ">
@@ -31,21 +41,55 @@ export default function Home() {
       {productOrder?.length !== 0 && (
         <div className="w-full flex flex-col gap-8 mt-4 p-4 border border-[#9F9F9F] rounded-md">
           {productOrder?.map((item) => (
-            <p className="w-full flex justify-between text-xs font-mono text-gray-800">
-              <span>
-                {item.amount}x{" "}
-                {
-                  products?.find((product) => product.id === item.productId)
-                    ?.name
-                }
-              </span>
-              <span>
-                {Number(item.total).toLocaleString(`pt-BR`, {
-                  style: `currency`,
-                  currency: `BRL`,
-                })}
-              </span>
-            </p>
+            <div>
+              <p className="w-full flex justify-between text-xs font-mono text-gray-800">
+                <span>
+                  {item.amount}x{" "}
+                  {
+                    products?.find((product) => product.id === item.productId)
+                      ?.name
+                  }
+                </span>
+                <span>
+                  {Number(item.total).toLocaleString(`pt-BR`, {
+                    style: `currency`,
+                    currency: `BRL`,
+                  })}
+                </span>
+              </p>
+              <div>
+                {item?.additionalIds?.length! > 0 && (
+                  <span className="text-xs font-mono text-gray-800 ml-5">
+                    Adicionais:
+                  </span>
+                )}
+                {item.additionalIds?.map((add) => (
+                  <p className="w-full flex justify-between text-xs font-mono text-gray-800 pl-6">
+                    <span>
+                      - {add.name} - {add.description}
+                    </span>
+                    <span>
+                      {Number(add.price).toLocaleString(`pt-BR`, {
+                        style: `currency`,
+                        currency: `BRL`,
+                      })}
+                    </span>
+                  </p>
+                ))}
+              </div>
+              {item?.note && (
+                <div>
+                  <p className="flex flex-col gap-1">
+                    <span className="text-xs font-mono text-gray-800 ml-5">
+                      Observação:
+                    </span>
+                    <span className="text-xs font-mono text-gray-800 ml-6">
+                      {item.note}
+                    </span>
+                  </p>
+                </div>
+              )}
+            </div>
           ))}
 
           <div>
