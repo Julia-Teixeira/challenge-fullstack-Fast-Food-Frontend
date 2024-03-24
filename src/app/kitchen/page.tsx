@@ -67,9 +67,23 @@ const Kitchen = () => {
               id="notes"
               title="notes"
               className="w-80 resize-none outline-none bg-[#F5F5F5] h-28 mt-2 p-2"
-              value={ordersOnGoing![0]?.productOrder
-                .map((item) => item.note)
-                .toString()}
+              value={
+                ordersOnGoing?.length === 0
+                  ? ""
+                  : ordersOnGoing![0]?.productOrder
+                      .map(
+                        (item) =>
+                          `${item.product.name} - ${
+                            item.note
+                          }\n - Adicionais:\n ${item.additionalIds
+                            ?.map(
+                              (item) => `${item.name} - ${item.description} `
+                            )
+                            .join("\n")} `
+                      )
+                      .join("\n")
+                      .toString()
+              }
               readOnly
             />
           </label>
