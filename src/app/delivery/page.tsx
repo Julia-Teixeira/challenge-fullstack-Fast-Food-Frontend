@@ -1,10 +1,8 @@
 "use client";
 import { useOrder } from "@/provider/orderProvider";
-import Image from "next/image";
-import { IoMdCheckmark, IoMdClose } from "react-icons/io";
 
 const Delivery = () => {
-  const { orders, changeStatusOrder } = useOrder();
+  const { orders } = useOrder();
   const ordersOnGoing = orders?.filter((order) => order.status === "onGoing");
   const ordersFinished = orders?.filter((order) => order.status === "finished");
 
