@@ -5,7 +5,6 @@ import ProductList from "@/components/productList";
 import Search from "@/components/search";
 import { useProduct } from "@/provider/productProvider";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function Home() {
   const {
@@ -14,8 +13,6 @@ export default function Home() {
     products,
     setProductOrder,
     deleteProductOrder,
-    getProducts,
-    getAllCategories,
   } = useProduct();
 
   const router = useRouter();
@@ -24,14 +21,6 @@ export default function Home() {
     productOrder?.map(async (item) => await deleteProductOrder(item.id));
     setProductOrder([]);
   };
-
-  useEffect(() => {
-    (async () => {
-      await getProducts();
-      await getAllCategories();
-    })();
-  }, []);
-
   return (
     <div className="flex flex-col ">
       <h1 className="text-3xl font-bold text-black pt-20">Seja bem vindo!</h1>
@@ -51,7 +40,10 @@ export default function Home() {
                   }
                 </span>
                 <span>
-                  {Number(item.total).toLocaleString(`pt-BR`, {
+                  {Number(
+                    products?.find((product) => product.id === item.productId)
+                      ?.price
+                  ).toLocaleString(`pt-BR`, {
                     style: `currency`,
                     currency: `BRL`,
                   })}
