@@ -36,9 +36,21 @@ export const productOrderFormDataSchema = z.object({
   additionalIds: z.array(z.number()).nullish(),
 });
 
-export const productOrderSchema = productOrderFormDataSchema.extend({
-  id: z.number(),
-});
+export const productOrderSchema = productOrderFormDataSchema
+  .omit({ additionalIds: true })
+  .extend({
+    id: z.number(),
+    additionalIds: z
+      .array(
+        z.object({
+          id: z.number(),
+          name: z.string(),
+          description: z.string(),
+          price: z.string(),
+        })
+      )
+      .nullish(),
+  });
 
 export type TProduct = z.infer<typeof productSchema>;
 export type TCategoryList = z.infer<typeof categoryListSchema>;

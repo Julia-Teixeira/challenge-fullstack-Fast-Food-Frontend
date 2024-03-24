@@ -3,7 +3,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "@/service/api";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import {
   ProductContextValues,
   TAdditionalList,
@@ -39,7 +38,6 @@ export const ProductProvider = ({
   const [productOrder, setProductOrder] = useState<TProductOrder[] | undefined>(
     []
   );
-  const router = useRouter();
 
   const getProducts = async () => {
     const { data } = await api.get<TProduct[]>("/products");
@@ -103,8 +101,7 @@ export const ProductProvider = ({
         deleteProductOrder,
       }}
     >
-      {" "}
-      {children}{" "}
+      {children}
     </ProductContext.Provider>
   );
 };
