@@ -1,10 +1,16 @@
 "use client";
 import { useProduct } from "@/provider/productProvider";
 import CardProduct from "./cardProduct";
-import { SetStateAction } from "react";
+import { useEffect } from "react";
 
 const ProductList = () => {
-  const { products, selectedProducts } = useProduct();
+  const { products, selectedProducts, getProducts } = useProduct();
+
+  useEffect(() => {
+    (async () => {
+      await getProducts();
+    })();
+  }, []);
   return (
     <section className="text-black mt-4">
       <h1 className="text-base font-bold">Produtos</h1>
