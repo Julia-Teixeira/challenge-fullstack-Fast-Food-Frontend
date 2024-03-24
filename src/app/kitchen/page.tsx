@@ -4,7 +4,7 @@ import Image from "next/image";
 import { IoMdCheckmark, IoMdClose } from "react-icons/io";
 
 const Kitchen = () => {
-  const { orders, changeStatusOrder } = useOrder();
+  const { orders, changeStatusOrder, deleteOrder } = useOrder();
   const ordersOnGoing = orders?.filter((order) => order.status === "onGoing");
   const ordersFinished = orders?.filter((order) => order.status === "finished");
 
@@ -42,6 +42,7 @@ const Kitchen = () => {
 
               <div className="flex gap-2">
                 <button
+                  onClick={() => deleteOrder(order.id)}
                   type="button"
                   title="Remover"
                   className="p-2 rounded-lg bg-red-100"
