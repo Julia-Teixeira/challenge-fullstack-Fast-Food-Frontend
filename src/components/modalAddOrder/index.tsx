@@ -88,7 +88,7 @@ const ModalAddOrder = () => {
         </div>
         <div className="flex justify-between flex-col sm:flex-row mt-6">
           <div className="flex flex-col sm:flex-row gap-4 w-[70%]">
-            <div className="flex gap-4 flex-col items-center m-auto bg-red-500 max-w-40 w-[400px] h-36 rounded-xl shadow-sm">
+            <div className="pattern-backgound flex gap-4 flex-col items-center bg-red-500 max-w-40 w-[400px] h-36 rounded-xl shadow-sm">
               <div className="relative h-16 w-full">
                 <Image
                   src={selectdProduct!.imgCover}
@@ -252,7 +252,7 @@ const ModalAddOrder = () => {
           </div>
         </div>
 
-        <div className="w-full flex gap-8 justify-end mt-4 text-xs">
+        <div className="w-full flex flex-wrap gap-8 justify-center md:justify-end mt-4 text-xs">
           <button
             type="button"
             className="border outline-none rounded-xl py-2 px-6 border-[#125C13]  text-[#125C13]  font-semibold"

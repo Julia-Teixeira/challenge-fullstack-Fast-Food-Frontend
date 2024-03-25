@@ -6,7 +6,7 @@ import Link from "next/link";
 const Header = () => {
   return (
     <header className="bg-[#125C13] shadow">
-      <div className="mx-auto max-w-7xl px-2 py-2 sm:px-4 lg:px-5 flex justify-between items-center">
+      <div className="mx-auto max-w-7xl px-2 py-2 sm:px-4 lg:px-5 flex flex-col sm:flex-row sm:justify-between items-center">
         <Link href="/">
           <h1 className="text-xl font-semibold tracking-tight text-white cursor-pointer flex items-center gap-1">
             <Image
