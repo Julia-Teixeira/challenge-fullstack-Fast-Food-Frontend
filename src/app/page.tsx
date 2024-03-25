@@ -5,6 +5,7 @@ import ProductList from "@/components/productList";
 import Search from "@/components/search";
 import { useProduct } from "@/provider/productProvider";
 import { useRouter } from "next/navigation";
+import { IoIosRemoveCircleOutline } from "react-icons/io";
 
 export default function Home() {
   const {
@@ -17,9 +18,14 @@ export default function Home() {
 
   const router = useRouter();
 
-  const cancelOrder = () => {
+  const cancelOrders = () => {
     productOrder?.map(async (item) => await deleteProductOrder(item.id));
     setProductOrder([]);
+  };
+
+  const cancelOrder = async (id: number) => {
+    await deleteProductOrder(id);
+    setProductOrder(productOrder?.filter((item) => item.id !== id));
   };
   return (
     <div className="flex flex-col ">
@@ -39,7 +45,7 @@ export default function Home() {
                       ?.name
                   }
                 </span>
-                <span>
+                <span className="flex gap-2">
                   {Number(
                     products?.find((product) => product.id === item.productId)
                       ?.price
@@ -47,6 +53,13 @@ export default function Home() {
                     style: `currency`,
                     currency: `BRL`,
                   })}
+                  <button
+                    type="button"
+                    title="Remover item"
+                    onClick={() => cancelOrder(item.id)}
+                  >
+                    <IoIosRemoveCircleOutline color="#f00" />
+                  </button>
                 </span>
               </p>
               <div>
@@ -103,7 +116,7 @@ export default function Home() {
 
       <div className="w-full flex gap-8 justify-end mt-4">
         <button
-          onClick={() => cancelOrder()}
+          onClick={() => cancelOrders()}
           type="button"
           disabled={productOrder?.length === 0 && true}
           className="w-64 border-2 border-[#125C13] outline-none rounded-2xl py-2 text-[#125C13] disabled:text-[#9F9F9F] disabled:border-[#9F9F9F] font-semibold"
