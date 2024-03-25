@@ -10,7 +10,8 @@ const Search = () => {
   const handleSearch = (search: string) => {
     const filter: TProduct[] | undefined = products?.filter(
       (product: TProduct) =>
-        product.name.toLowerCase().includes(search.toLowerCase())
+        product.name.toLowerCase().includes(search.toLowerCase()) ||
+        product.id === Number(search)
     );
 
     setSelectedProducts(filter);
@@ -23,10 +24,10 @@ const Search = () => {
     <>
       <input
         onChange={(e) => handleSearch(e.target.value)}
-        value={search}
+        defaultValue={search}
         title="Pesquisar"
         placeholder="O que você procura?"
-        className="bg-[#F4F4F4] p-3 rounded w-64 sm:w-96 outline-none text-black text-sm mt-4"
+        className="bg-[#F4F4F4] p-3 rounded w-full max-w-96 outline-none text-black text-sm mt-4"
       />
       {selectedProducts !== undefined && selectedProducts?.length > 0 ? (
         <span
