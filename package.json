@@ -16,6 +16,7 @@
     "js-cookie": "^3.0.5",
     "jspdf": "^2.5.1",
     "next": "14.1.4",
+    "qz-tray": "^2.2.3",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.1",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/qz-tray": "^2.2.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",

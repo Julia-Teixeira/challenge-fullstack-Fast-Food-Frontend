@@ -16,6 +16,12 @@
   }
 }
 
+.pattern-backgound{
+  background-image: url("../../public/pattern.svg");
+  background-size: 150px;
+  background-color:#FA6767;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
 
