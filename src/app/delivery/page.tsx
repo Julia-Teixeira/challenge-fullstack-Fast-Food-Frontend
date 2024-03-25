@@ -13,8 +13,8 @@ const Delivery = () => {
         <ul className="flex flex-col gap-4 mt-4 overflow-auto h-[200px] md:h-[400px] lg:w-96">
           {ordersOnGoing?.map((order) => (
             <li key={order.id}>
-              <span className="font-semibold text-2xl md:text-6xl text-gray-500">
-                {order.nameCostumer}
+              <span className="font-semibold text-2xl md:text-5xl text-gray-500">
+                {order.code} - {order.nameCostumer}
               </span>
             </li>
           ))}
@@ -29,8 +29,8 @@ const Delivery = () => {
           {ordersFinished?.map((order) => (
             <li key={order.id}>
               <div>
-                <span className="font-semibold text-2xl md:text-6xl text-green-800">
-                  {order.nameCostumer}
+                <span className="font-semibold text-2xl md:text-5xl text-green-800">
+                  {order.code} - {order.nameCostumer}
                 </span>
               </div>
             </li>

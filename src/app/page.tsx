@@ -3,8 +3,10 @@ import CategoryList from "@/components/categoryList";
 import ModalAddOrder from "@/components/modalAddOrder";
 import ProductList from "@/components/productList";
 import Search from "@/components/search";
+
 import { useProduct } from "@/provider/productProvider";
 import { useRouter } from "next/navigation";
+
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 
 export default function Home() {
@@ -29,14 +31,16 @@ export default function Home() {
   };
   return (
     <div className="flex flex-col ">
-      <h1 className="text-3xl font-bold text-black pt-20">Seja bem vindo!</h1>
+      <h1 className="text-3xl font-bold text-black pt-8 lg:pt-20">
+        Seja bem vindo!
+      </h1>
       <Search />
       <CategoryList />
       <ProductList />
       {productOrder?.length !== 0 && (
         <div className="w-full flex flex-col gap-8 mt-4 p-4 border border-[#9F9F9F] rounded-md">
           {productOrder?.map((item) => (
-            <div>
+            <div key={item.id}>
               <p className="w-full flex justify-between text-xs font-mono text-gray-800">
                 <span>
                   {item.amount}x{" "}
@@ -69,7 +73,10 @@ export default function Home() {
                   </span>
                 )}
                 {item.additionalIds?.map((add) => (
-                  <p className="w-full flex justify-between text-xs font-mono text-gray-800 pl-6">
+                  <p
+                    className="w-full flex justify-between text-xs font-mono text-gray-800 pl-6"
+                    key={add.id}
+                  >
                     <span>
                       - {add.name} - {add.description}
                     </span>
@@ -114,7 +121,7 @@ export default function Home() {
         </div>
       )}
 
-      <div className="w-full flex gap-8 justify-end mt-4">
+      <div className="w-full flex flex-wrap gap-8 justify-center md:justify-end mt-4 mb-4">
         <button
           onClick={() => cancelOrders()}
           type="button"

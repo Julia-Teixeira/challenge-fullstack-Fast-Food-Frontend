@@ -9,8 +9,7 @@ import { useRouter } from "next/navigation";
 import ModalOrderFinished from "@/components/modalOrderFinished";
 
 const PaymentPage = () => {
-  const { productOrder, products, deleteProductOrder, setProductOrder } =
-    useProduct();
+  const { productOrder, products } = useProduct();
   const { createOrder, countOrder, isOpenModal, printOrder } = useOrder();
   const router = useRouter();
 
@@ -20,10 +19,7 @@ const PaymentPage = () => {
   );
 
   const cancelOrder = () => {
-    productOrder?.map(async (item) => await deleteProductOrder(item.id));
-    setProductOrder([]);
-    setTotal(0);
-    router.push("/");
+    router.back();
   };
   const {
     register,
