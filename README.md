@@ -1,36 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+﻿<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/Julia-Teixeira/challenge-fullstack-Fast-Food-Frontend?color=%2304D361" />
 
-## Getting Started
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/Julia-Teixeira/challenge-fullstack-Fast-Food-Frontend" />
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  <a href="https://github.com/diegoguilhermeDS/connect-sphere/commits/master">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Julia-Teixeira/challenge-fullstack-Fast-Food-Frontend" />
+  </a>
+  
+  <a href="https://github.com/Julia-Teixeira/challenge-fullstack-Fast-Food-Frontend">
+    <img alt="Feito por Julia PEreira" src="https://img.shields.io/badge/feito%20por-JuliaPereira-%237519C1" />
+  </a>
+</p>
