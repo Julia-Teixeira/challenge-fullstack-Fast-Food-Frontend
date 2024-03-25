@@ -2,13 +2,12 @@
 
 import { useProduct } from "@/provider/productProvider";
 import { TProduct } from "@/provider/productProvider/interface";
-import { useEffect, useState } from "react";
-import { nullable } from "zod";
+import { useState } from "react";
 
 const Search = () => {
   const { setSelectedProducts, products, selectedProducts } = useProduct();
   const [search, setSearch] = useState<string>("");
-  const handleSearch = () => {
+  const handleSearch = (search: string) => {
     const filter: TProduct[] | undefined = products?.filter(
       (product: TProduct) =>
         product.name.toLowerCase().includes(search.toLowerCase())
@@ -16,20 +15,14 @@ const Search = () => {
 
     setSelectedProducts(filter);
   };
-
-  useEffect(() => {
-    handleSearch();
-  }, [search]);
-
   const clearFilter = () => {
     setSearch("");
     setSelectedProducts(undefined);
   };
-
   return (
     <>
       <input
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => handleSearch(e.target.value)}
         value={search}
         title="Pesquisar"
         placeholder="O que você procura?"
