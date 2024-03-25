@@ -32,7 +32,7 @@ const Kitchen = () => {
                   </span>
                   <div className="flex flex-col">
                     {order.productOrder.map((item) => (
-                      <span className="text-xs">
+                      <span className="text-xs" key={item.id}>
                         {item.amount}X {item.product.name}
                       </span>
                     ))}
@@ -67,20 +67,24 @@ const Kitchen = () => {
             <textarea
               id="notes"
               title="notes"
-              className="w-80 resize-none outline-none bg-[#F5F5F5] h-28 mt-2 p-2"
+              className="w-72 md:w-80 resize-none outline-none bg-[#F5F5F5] h-28 mt-2 p-2"
               value={
                 ordersOnGoing?.length === 0
                   ? ""
                   : ordersOnGoing![0]?.productOrder
                       .map(
                         (item) =>
-                          `${item.product.name} - ${
-                            item.note
-                          }\n - Adicionais:\n ${item.additionalIds
-                            ?.map(
-                              (item) => `${item.name} - ${item.description} `
-                            )
-                            .join("\n")} `
+                          `${item.product.name} - ${item.note}\n ${
+                            item?.additionalIds?.length! > 0
+                              ? `- Adicionais:\n ${item.additionalIds
+                                  ?.map(
+                                    (item) =>
+                                      `${item.name} - ${item.description} `
+                                  )
+                                  .join("\n")} `
+                              : ""
+                          }
+                           `
                       )
                       .join("\n")
                       .toString()
@@ -115,7 +119,7 @@ const Kitchen = () => {
                   </span>
                   <div className="flex flex-col">
                     {order.productOrder.map((item) => (
-                      <span className="text-xs">
+                      <span className="text-xs" key={item.id}>
                         {item.amount}X {item.product.name}
                       </span>
                     ))}
