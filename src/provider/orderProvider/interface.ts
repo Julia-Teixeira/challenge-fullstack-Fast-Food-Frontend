@@ -67,6 +67,7 @@ export type TOrder = z.infer<typeof orderSchema>;
 
 export type OrderContextValues = {
   orders: TOrder[] | undefined;
+  getAllOrders: () => Promise<void>;
   countOrder: number;
   createOrder: (formData: TCreateOrder) => Promise<void>;
   isOpenModal: boolean;

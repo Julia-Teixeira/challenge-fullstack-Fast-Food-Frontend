@@ -6,8 +6,9 @@ import { AxiosError } from "axios";
 import { OrderContextValues, TCreateOrder, TOrder } from "./interface";
 import { useProduct } from "../productProvider";
 import { useRouter } from "next/navigation";
-import { print, getPrinters } from "pdf-to-printer";
+const qz = require("qz-tray");
 import { jsPDF } from "jspdf";
+import Error from "next/error";
 
 export const OrderContext = createContext({} as OrderContextValues);
 
@@ -17,7 +18,7 @@ export const useOrder = () => {
 
 export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   const [countOrder, setCountOrder] = useState(0);
-  const { setProductOrder, products } = useProduct();
+  const { setProductOrder, products, productOrder } = useProduct();
   const [orders, setOrders] = useState<TOrder[] | undefined>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const route = useRouter();
@@ -38,17 +39,15 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const printOrder = async (dataId: number) => {
-    // const options = {
-    //   printer: "Epson Stylus C45",
-    //   scale: "fit",
-    // };("assets/sample.pdf").then(console.log);
-
     const order = await getOrderById(dataId);
 
     const doc = new jsPDF({
-      orientation: "landscape",
+      orientation: "portrait",
+      unit: "mm",
+      format: [80, 150],
     });
 
+    doc.setFontSize(12);
     doc.text("Obrigado pela preferência!", 10, 10);
     doc.text(`Code - ${order?.code}`, 10, 20);
     doc.text(`Nome - ${order?.nameCostumer}`, 10, 30);
@@ -58,7 +57,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
 
     order?.productOrder!.map((item: any, index) => {
       doc.text(
-        `${index + 1} - ${item.product.name} ------- ${item.amount} - R$${(
+        `${index + 1} - ${item.product.name} --- ${item.amount} - R$${(
           Number(
             products?.find((product) => product.id === item.product.id)!.price
           ) * item.amount
@@ -71,9 +70,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
         doc.text("Adicionais:", 20, (y += 10));
         item.additionalIds?.map((additional: any) => {
           doc.text(
-            `- ${additional.name} ------- R$${Number(additional.price).toFixed(
-              2
-            )}`,
+            `- ${additional.name} --- R$${Number(additional.price).toFixed(2)}`,
             30,
             (y += 10)
           );
@@ -109,15 +106,55 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
       20,
       (y += 10)
     );
-
     doc.save(`order_${order?.code}.pdf`);
+  };
+
+  const printReceipt = async (nameCostumer: string, code: number) => {
+    // esse funcionou
+    qz.websocket
+      .connect()
+      .then(() => {
+        return qz.printers.find();
+      })
+      .then((printers: any) => {
+        let config = qz.configs.create("Zebra", {
+          size: { width: 4, height: 6 },
+        });
+        return qz.print(config, [
+          "^XA\n",
+          "^FS\n",
+          "^FX Texto de agradecimento\n",
+          "^FO 90,100\n",
+          "^A0N,36,46\n",
+          "^FD Obrigado pela preferencia\n",
+          "^FS\n",
+          "^FX Nome do cliente\n",
+          "^FO 90,160\n",
+          "^A0,36,46\n",
+          "^FD Cliente: " + nameCostumer + "\n",
+          "^FS\n",
+          "^FX Codigo do pedido\n",
+          "^FO 90,220\n",
+          "^A0,36,46\n",
+          "^FD Code: " + code + "\n",
+          "^FS\n",
+          "^XZ",
+        ]);
+      })
+      .then(() => {
+        return qz.websocket.disconnect();
+      })
+      .catch((err: Error) => {
+        console.error(err);
+      });
   };
 
   const createOrder = async (formData: TCreateOrder) => {
     const { data } = await api.post("/orders", formData);
     await getAllOrders();
     setProductOrder([]);
-    await printOrder(data.id);
+    // await printOrder(data.id);
+    await printReceipt(data.nameCostumer, data.code);
     setIsOpenModal(true);
   };
 
@@ -150,6 +187,11 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
       .catch((error: AxiosError) => {
         console.error(error);
       });
+
+    if (status === "finished") {
+      const audio = new Audio("./notification_sound.mp3");
+      audio.play();
+    }
   };
 
   useEffect(() => {
@@ -157,11 +199,12 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
       await getCountOrder();
       await getAllOrders();
     })();
-  }, [orders]);
+  }, []);
   return (
     <OrderContext.Provider
       value={{
         orders,
+        getAllOrders,
         createOrder,
         countOrder,
         isOpenModal,
