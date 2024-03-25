@@ -12,13 +12,13 @@ const ItemNavList = ({
   const path = usePathname();
 
   return (
-    <li
+    <div
       className={`cursor-pointer ${
         path === pathName && "py-2 px-3 rounded-lg bg-black/30"
       } `}
     >
       {name}
-    </li>
+    </div>
   );
 };
 

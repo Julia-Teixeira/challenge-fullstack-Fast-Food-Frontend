@@ -15,7 +15,7 @@ const CardCategory = ({ category }: { category: any }) => {
   return (
     <li
       onClick={() => handleClick()}
-      className="flex gap-4 flex-col items-center max-w-48 w-full h-36 rounded-xl shadow hover:shadow-inner"
+      className="flex gap-4 flex-col items-center max-w-48 w-full h-36 rounded-xl shadow hover:shadow-inner cursor-pointer"
     >
       <div className="h-16 w-36 md:w-48 flex flex-col items-center mt-4 gap-2">
         <Image

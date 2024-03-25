@@ -9,15 +9,15 @@ const Kitchen = () => {
   const ordersFinished = orders?.filter((order) => order.status === "finished");
 
   return (
-    <section className="flex justify-between text-black h-[600px] mt-8">
+    <section className="flex flex-col sm:flex-row gap-8 lg:justify-between text-black h-[600px] mt-8">
       <div>
         <h2 className="font-bold text-lg">Preparando:</h2>
-        <ul className="flex flex-col gap-4 mt-4 overflow-auto h-[400px] w-96">
+        <ul className="flex flex-col gap-4 mt-4 overflow-auto h-[200px] w-full lg:h-[400px] lg:w-96">
           {ordersOnGoing?.map((order) => (
             <li
               key={order.id}
               className="flex justify-between items-center
-            shadow-sm rounded-xl p-3 w-80"
+            shadow-sm rounded-xl p-3 w-full lg:w-80"
             >
               <div className="flex gap-4">
                 <Image
@@ -27,7 +27,7 @@ const Kitchen = () => {
                   height={50}
                 />
                 <div>
-                  <span className="font-semibold">
+                  <span className="font-semibold text-sm lg:text-base">
                     {order.code} - {order.nameCostumer}
                   </span>
                   <div className="flex flex-col">
@@ -91,16 +91,16 @@ const Kitchen = () => {
         </div>
       </div>
 
-      <div className="h-full w-[1px] bg-black" />
+      <div className="w-full h-[1px] sm:h-full sm:w-[1px] bg-black" />
 
       <div>
         <h2 className="font-bold text-lg">Pronto:</h2>
-        <ul className="flex flex-col gap-4 mt-4 overflow-auto h-[400px] w-96">
+        <ul className="flex flex-col gap-4 mt-4 overflow-auto sm:h-[400px] w-full lg:w-96">
           {ordersFinished?.map((order) => (
             <li
               key={order.id}
               className="flex justify-between items-center border border-green-600
-              shadow-sm shadow-green-200 rounded-xl p-3 w-80"
+              shadow-sm shadow-green-200 rounded-xl p-3 w-full lg:w-80"
             >
               <div className="flex gap-4">
                 <Image
@@ -110,7 +110,7 @@ const Kitchen = () => {
                   height={50}
                 />
                 <div>
-                  <span className="font-semibold">
+                  <span className="font-semibold text-sm lg:text-base">
                     {order.code} - {order.nameCostumer}
                   </span>
                   <div className="flex flex-col">

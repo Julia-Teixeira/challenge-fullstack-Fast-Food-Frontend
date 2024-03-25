@@ -20,11 +20,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body className={inter.className}>
         <ProductProvider>
           <OrderProvider>
             <Header />
-            <main className="flex min-h-screen flex-col px-2 sm:px-6 lg:px-36 mx-auto max-w-7xl">
+            <main className="flex min-h-screen flex-col px-2 sm:px-6 xl:px-36 mx-auto max-w-7xl">
               {children}
             </main>
           </OrderProvider>

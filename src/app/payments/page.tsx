@@ -11,7 +11,7 @@ import ModalOrderFinished from "@/components/modalOrderFinished";
 const PaymentPage = () => {
   const { productOrder, products, deleteProductOrder, setProductOrder } =
     useProduct();
-  const { createOrder, countOrder, isOpenModal } = useOrder();
+  const { createOrder, countOrder, isOpenModal, printOrder } = useOrder();
   const router = useRouter();
 
   const [total, setTotal] = useState(0);
@@ -79,11 +79,14 @@ const PaymentPage = () => {
           Pagamento
         </h1>
         <form onSubmit={handleSubmit(handleSubmitForm)} className="w-full">
-          <div className="w-full flex justify-between mt-4 gap-10">
-            <div className="w-[40%]">
+          <div className="w-full flex flex-col sm:flex-row justify-between mt-4 gap-10">
+            <div className="sm:w-[40%]">
               <p className="text-xs font-bold mt-6">Resumo da compra</p>
               {productOrder?.length !== 0 && (
-                <div className="w-full flex flex-col gap-6 mt-2 p-4 border border-[#9F9F9F] rounded-md">
+                <div
+                  id="resumo"
+                  className="w-full flex flex-col gap-6 mt-2 p-4 border border-[#9F9F9F] rounded-md"
+                >
                   {productOrder?.map((item) => (
                     <div key={item.id}>
                       <p className="w-full flex justify-between text-xs font-mono text-gray-800">
@@ -196,7 +199,7 @@ const PaymentPage = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[40%]">
+            <div className="sm:w-[40%]">
               <p className="text-xs font-bold mt-6">
                 Selecione a forma de pagamento
               </p>
