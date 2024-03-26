@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+﻿<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/Julia-Teixeira/challenge-fullstack-Fast-Food-Frontend?color=%2304D361" />
 
-## Getting Started
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/Julia-Teixeira/challenge-fullstack-Fast-Food-Frontend" />
 
-First, run the development server:
+  <a href="https://github.com/diegoguilhermeDS/connect-sphere/commits/master">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Julia-Teixeira/challenge-fullstack-Fast-Food-Frontend" />
+  </a>
+  
+  <a href="https://github.com/Julia-Teixeira/challenge-fullstack-Fast-Food-Frontend">
+    <img alt="Feito por Julia PEreira" src="https://img.shields.io/badge/feito%20por-JuliaPereira-%237519C1" />
+  </a>
+</p>
+
+## 🚀 Como executar o projeto
+
+### Pré-requisitos
+
+Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
+[Git](https://git-scm.com), [Node.js](https://nodejs.org/en/). 
+Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
+
+### 🎲 Rodando o Backend (servidor)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone este repositório
+$ git clone git@github.com:Julia-Teixeira/challenge-fullstack-Fast-Food-Frontend.git
+
+# Acesse a pasta do projeto no terminal/cmd
+$ cd challenge-fullstack-Fast-Food-Frontend
+
+# Instale as dependências
+$ npm install ou yarn
+
+# Preencha as variáveis de ambiente corretamente
+
+# Execute a aplicação em modo de desenvolvimento
+$ npm run dev ou yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Impressão da nota não fiscal
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Para conseguir imprimir corretamente é necessário instalar o programa [QzTray](https://qz.io/download/), e fazer as configurações da sua impressora, se possível nomeá-la como 'Zebra'.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 🛠 Tecnologias
 
-## Learn More
+As seguintes ferramentas foram usadas na construção do projeto:
 
-To learn more about Next.js, take a look at the following resources:
+-   **[Next.js](https://nextjs.org/docs)**
+-   **[Tailwind](https://tailwindcss.com/)**
+-   **[QzTray](https://qz.io/)**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> Veja o arquivo  [package.json](https://github.com/Julia-Teixeira/challenge-fullstack-Fast-Food-Frontend/blob/main/package.json)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Link do desafio
+-  *[Desafio Fullstack Devio](https://github.com/deviobr/challenges/blob/main/challenge-fullstack.md)*
