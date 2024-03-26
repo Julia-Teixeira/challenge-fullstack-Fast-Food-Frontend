@@ -17,7 +17,7 @@ const ProductList = () => {
       <span className="text-xs">
         Selecione um produto para adicionar ao seu pedido
       </span>
-      <ul className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center mt-4">
+      <ul className="grid xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center mt-4">
         {selectedProducts === undefined || selectedProducts?.length === 0
           ? products?.map((product) => (
               <CardProduct key={product.id} product={product} />
