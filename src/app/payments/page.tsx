@@ -10,7 +10,7 @@ import ModalOrderFinished from "@/components/modalOrderFinished";
 
 const PaymentPage = () => {
   const { productOrder, products } = useProduct();
-  const { createOrder, countOrder, isOpenModal, printOrder } = useOrder();
+  const { createOrder, countOrder, isOpenModal } = useOrder();
   const router = useRouter();
 
   const [total, setTotal] = useState(0);
@@ -343,7 +343,7 @@ const PaymentPage = () => {
                 <div className="w-1/2">
                   <p className="text-xs font-bold mt-6">Troco</p>
                   <label
-                    htmlFor="valorEntregue"
+                    htmlFor="troco"
                     className="flex bg-[#F4F4F4] rounded w-full text-black text-sm items-center mt-2"
                   >
                     <span className="pl-2">R$</span>
