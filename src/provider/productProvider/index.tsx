@@ -7,9 +7,12 @@ import {
   ProductContextValues,
   TAdditionalList,
   TCategoryList,
+  TPaginationProduct,
   TProduct,
   TProductOrder,
   TProductOrderFormData,
+  TPaginationAdditional,
+  TPaginationCategory,
 } from "./interface";
 
 export const ProductContext = createContext({} as ProductContextValues);
@@ -40,30 +43,51 @@ export const ProductProvider = ({
   );
 
   const getProducts = async () => {
-    const { data } = await api.get<TProduct[]>("/products");
-    setProducts(data);
+    setIsLoading(true);
+    await api
+      .get<TPaginationProduct>("/products")
+      .then(({ data }) => {
+        setProducts(data.data);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false));
   };
 
   const getAllCategories = async () => {
-    const { data } = await api.get<TCategoryList[]>("/categories");
-    setCategories(data);
+    setIsLoading(true);
+    await api
+      .get<TPaginationCategory>("/categories")
+      .then(({ data }): void => {
+        setCategories(data.data);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false));
   };
 
   const getAllAdditionalProducts = async () => {
-    const { data } = await api.get<TAdditionalList[]>("/products/additional");
-    setAdditionalProducts(data);
+    await api
+      .get<TPaginationAdditional>("/additionals")
+      .then(({ data }) => {
+        setAdditionalProducts(data.data);
+      })
+      .catch((error) => console.error(error));
   };
 
   const createProductOrder = async (formData: TProductOrderFormData) => {
-    const { data } = await api.post<TProductOrder>("/productOrders", formData);
-
-    setProductOrder([...productOrder!, data]);
+    await api
+      .post<TProductOrder>("/productOrders", formData)
+      .then(({ data }) => {
+        setProductOrder([...productOrder!, data]);
+      })
+      .catch((error) => console.error(error));
   };
 
   const deleteProductOrder = async (id: number) => {
     await api
       .delete(`/productOrders/${id}`)
-
+      .then(() => {
+        setProductOrder(productOrder?.filter((item) => item.id !== id));
+      })
       .catch((error: AxiosError) => {
         console.error(error);
       });
@@ -71,10 +95,12 @@ export const ProductProvider = ({
 
   useEffect(() => {
     (async () => {
+      setIsLoading(true);
       await getAllCategories();
       await getProducts();
       await getAllAdditionalProducts();
     })();
+    setIsLoading(false);
   }, []);
 
   return (
