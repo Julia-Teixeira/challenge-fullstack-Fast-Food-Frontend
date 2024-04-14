@@ -31,6 +31,7 @@ const ModalAddOrder = () => {
   };
 
   const handleRemoveQuantity = () => {
+    if (quantity === 1) return;
     setQuantity(quantity - 1);
   };
 
