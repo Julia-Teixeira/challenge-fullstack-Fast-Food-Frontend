@@ -4,8 +4,8 @@ import CardProduct from "./cardProduct";
 import { useEffect } from "react";
 
 const ProductList = () => {
-  const { products, selectedProducts, getProducts, isLoading } = useProduct();
-
+  const { products, selectedProducts, getProducts, isLoadingProducts } =
+    useProduct();
   useEffect(() => {
     (async () => {
       await getProducts();
@@ -17,8 +17,8 @@ const ProductList = () => {
       <span className="text-xs">
         Selecione um produto para adicionar ao seu pedido
       </span>
-      {isLoading ? (
-        <div className="flex gap-2 justify-center">
+      {isLoadingProducts ? (
+        <div className="flex gap-2 justify-center h-[300px] items-center">
           <p className="w-8 h-8 border-t-4 border-green-500 rounded-full animate-spin" />
           Carregando produtos...
         </div>
