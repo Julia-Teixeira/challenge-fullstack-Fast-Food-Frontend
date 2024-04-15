@@ -81,4 +81,9 @@ export type OrderContextValues = {
   closeModal: () => void;
   changeStatusOrder: (id: number, status: string) => Promise<void>;
   deleteOrder: (id: number) => Promise<void>;
+  getOrdersByParams: (status: string) => Promise<void>;
+  orderOnGoing: TOrder[] | undefined;
+  orderFinished: TOrder[] | undefined;
+  isLoading: boolean;
+  errorTotal: string;
 };

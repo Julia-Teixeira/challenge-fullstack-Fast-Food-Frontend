@@ -26,6 +26,10 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   const [orders, setOrders] = useState<TOrder[] | undefined>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const route = useRouter();
+  const [orderOnGoing, setOrderOnGoing] = useState<TOrder[] | undefined>([]);
+  const [orderFinished, setOrderFinished] = useState<TOrder[] | undefined>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorTotal, setErrorTotal] = useState("");
 
   const getCountOrder = async () => {
     await api
@@ -43,6 +47,21 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
         setOrders(data.data);
       })
       .catch((error) => console.error(error));
+  };
+
+  const getOrdersByParams = async (status: string) => {
+    setIsLoading(true);
+    await api
+      .get<TOrderPagination>("/orders", { params: { status } })
+      .then(({ data }) => {
+        if (status === "onGoing") {
+          setOrderOnGoing(data.data);
+        } else {
+          setOrderFinished(data.data);
+        }
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false));
   };
 
   const getOrderById = async (id: number) => {
@@ -178,7 +197,10 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
         await printReceipt(data.nameCostumer, data.code);
         setIsOpenModal(true);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        setErrorTotal(error.response.data.message);
+      });
   };
 
   const deleteOrder = async (id: number) => {
@@ -206,6 +228,8 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
       .patch(`/orders/${id}`, { status })
       .then(async () => {
         await getAllOrders();
+        await getOrdersByParams("onGoing");
+        await getOrdersByParams("finished");
       })
       .catch((error: AxiosError) => {
         console.error(error);
@@ -236,6 +260,11 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
         closeModal,
         changeStatusOrder,
         deleteOrder,
+        getOrdersByParams,
+        orderOnGoing,
+        orderFinished,
+        isLoading,
+        errorTotal,
       }}
     >
       {children}

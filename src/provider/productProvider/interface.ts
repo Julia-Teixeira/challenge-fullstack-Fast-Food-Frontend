@@ -76,8 +76,9 @@ export type TPaginationProduct = z.infer<typeof productPaginationSchema>;
 export interface ProductContextValues {
   products: TProduct[] | undefined;
   setProducts: React.Dispatch<React.SetStateAction<TProduct[] | undefined>>;
-  isLoading: boolean;
-  getProducts: () => Promise<void>;
+  isLoadingProducts: boolean;
+  isLoadingCategory: boolean;
+  getProducts: (category?: string) => Promise<TProduct[] | void>;
   categories: TCategoryList[] | undefined;
   getAllCategories: () => Promise<void>;
   selectedProducts: TProduct[] | undefined;
@@ -99,4 +100,10 @@ export interface ProductContextValues {
   >;
   createProductOrder: (formData: TProductOrderFormData) => Promise<void>;
   deleteProductOrder: (id: number) => Promise<void>;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
+  selectedCategory: string;
+  getProductsParams: (
+    category?: string,
+    name?: string
+  ) => Promise<void | TProduct[]>;
 }

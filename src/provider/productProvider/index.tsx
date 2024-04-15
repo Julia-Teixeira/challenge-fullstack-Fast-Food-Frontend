@@ -28,6 +28,7 @@ export const ProductProvider = ({
 }) => {
   const [products, setProducts] = useState<TProduct[] | undefined>([]);
   const [categories, setCategories] = useState<TCategoryList[] | undefined>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [additionalProducts, setAdditionalProducts] = useState<
     TAdditionalList[] | undefined
   >([]);
@@ -37,31 +38,49 @@ export const ProductProvider = ({
   const [search, setSearch] = useState<TProduct[] | undefined>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectdProduct, setSelectedProduct] = useState<TProduct | undefined>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [isLoadingCategory, setIsLoadingCategory] = useState(true);
   const [productOrder, setProductOrder] = useState<TProductOrder[] | undefined>(
     []
   );
 
   const getProducts = async () => {
-    setIsLoading(true);
+    setIsLoadingProducts(true);
     await api
       .get<TPaginationProduct>("/products")
       .then(({ data }) => {
         setProducts(data.data);
       })
       .catch((error) => console.error(error))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsLoadingProducts(false));
+  };
+
+  const getProductsParams = async (category?: string, name?: string) => {
+    setIsLoadingProducts(true);
+    await api
+      .get<TPaginationProduct>("/products", {
+        params: {
+          category,
+          name,
+        },
+      })
+      .then(({ data }) => {
+        setSelectedProducts(data.data);
+        return data.data;
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoadingProducts(false));
   };
 
   const getAllCategories = async () => {
-    setIsLoading(true);
+    setIsLoadingCategory(true);
     await api
       .get<TPaginationCategory>("/categories")
       .then(({ data }): void => {
         setCategories(data.data);
       })
       .catch((error) => console.error(error))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsLoadingCategory(false));
   };
 
   const getAllAdditionalProducts = async () => {
@@ -95,12 +114,10 @@ export const ProductProvider = ({
 
   useEffect(() => {
     (async () => {
-      setIsLoading(true);
       await getAllCategories();
       await getProducts();
       await getAllAdditionalProducts();
     })();
-    setIsLoading(false);
   }, []);
 
   return (
@@ -108,7 +125,8 @@ export const ProductProvider = ({
       value={{
         products,
         setProducts,
-        isLoading,
+        isLoadingProducts,
+        isLoadingCategory,
         getProducts,
         categories,
         getAllCategories,
@@ -125,6 +143,9 @@ export const ProductProvider = ({
         productOrder,
         setProductOrder,
         deleteProductOrder,
+        setSelectedCategory,
+        selectedCategory,
+        getProductsParams,
       }}
     >
       {children}
