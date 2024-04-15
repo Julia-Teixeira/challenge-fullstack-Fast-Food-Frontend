@@ -5,7 +5,7 @@ import { useProduct } from "@/provider/productProvider";
 import { TCategoryList } from "@/provider/productProvider/interface";
 
 const CategoryList = () => {
-  const { categories, getAllCategories, isLoading } = useProduct();
+  const { categories, getAllCategories, isLoadingCategory } = useProduct();
 
   useEffect(() => {
     (async () => {
@@ -18,8 +18,8 @@ const CategoryList = () => {
       <h1 className="text-base font-bold text-black mt-2">Categorias</h1>
       <span className="text-xs">Navegue por categoria</span>
 
-      {isLoading ? (
-        <div className="flex gap-2 justify-center">
+      {isLoadingCategory ? (
+        <div className="flex gap-2 justify-center h-[100px] items-center">
           <p className="w-8 h-8 border-t-4 border-green-500 rounded-full animate-spin" />
           Carregando categorias...
         </div>

@@ -1,22 +1,14 @@
 "use client";
 import { useProduct } from "@/provider/productProvider";
-import { TProduct } from "@/provider/productProvider/interface";
 import Image from "next/image";
 
 const CardCategory = ({ category }: { category: any }) => {
-  const {
-    setSelectedProducts,
-    products,
-    selectedCategory,
-    setSelectedCategory,
-  } = useProduct();
+  const { selectedCategory, setSelectedCategory, getProductsParams } =
+    useProduct();
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    await getProductsParams(category.name, undefined);
     setSelectedCategory(category.name);
-    const filter = products?.filter(
-      (product: TProduct) => product.categoryId === category.id
-    );
-    setSelectedProducts(filter);
   };
   return (
     <li
