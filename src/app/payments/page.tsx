@@ -10,7 +10,7 @@ import ModalOrderFinished from "@/components/modalOrderFinished";
 
 const PaymentPage = () => {
   const { productOrder, products } = useProduct();
-  const { createOrder, countOrder, isOpenModal } = useOrder();
+  const { createOrder, countOrder, isOpenModal, errorTotal } = useOrder();
   const router = useRouter();
 
   const [total, setTotal] = useState(0);
@@ -21,6 +21,7 @@ const PaymentPage = () => {
   const cancelOrder = () => {
     router.back();
   };
+
   const {
     register,
     handleSubmit,
@@ -339,6 +340,9 @@ const PaymentPage = () => {
                       className="bg-[#F4F4F4] p-3 rounded w-full outline-none"
                     />
                   </label>
+                  {errorTotal.length > 0 && (
+                    <p className="text-red-500 text-xs">{errorTotal}</p>
+                  )}
                 </div>
                 <div className="w-1/2">
                   <p className="text-xs font-bold mt-6">Troco</p>
