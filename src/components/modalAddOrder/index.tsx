@@ -111,7 +111,13 @@ const ModalAddOrder = () => {
               <div className="flex gap-4 border-[1px] rounded-2xl w-20 h-7 border-[#125C13] items-center relative mt-4">
                 <p
                   onClick={() => handleRemoveQuantity()}
-                  className="bg-[#125C13] rounded-2xl w-7 h-7 text-white text-center flex items-center justify-center absolute left-[-2px] cursor-pointer"
+                  className={`bg-[#125C13] rounded-2xl w-7 h-7 text-white
+                  text-center flex items-center justify-center absolute left-[-2px]
+                  ${
+                    quantity == 1
+                      ? "disabled cursor-not-allowed"
+                      : "cursor-pointer"
+                  }`}
                 >
                   <IoMdRemove size={20} />
                 </p>
