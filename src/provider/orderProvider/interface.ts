@@ -1,4 +1,5 @@
 import z from "zod";
+import { paginationSchema } from "../interface";
 
 export const orderSchema = z.object({
   id: z.number(),
@@ -61,9 +62,14 @@ const createOrderSchema = orderSchema
     }),
   });
 
+const paginationOrderSchema = paginationSchema.extend({
+  data: orderSchema.array(),
+});
 export type TCreateOrder = z.infer<typeof createOrderSchema>;
 
 export type TOrder = z.infer<typeof orderSchema>;
+
+export type TOrderPagination = z.infer<typeof paginationOrderSchema>;
 
 export type OrderContextValues = {
   orders: TOrder[] | undefined;
@@ -73,7 +79,11 @@ export type OrderContextValues = {
   isOpenModal: boolean;
   openModal: () => void;
   closeModal: () => void;
-  printOrder: (dataId: number) => void;
   changeStatusOrder: (id: number, status: string) => Promise<void>;
   deleteOrder: (id: number) => Promise<void>;
+  getOrdersByParams: (status: string) => Promise<void>;
+  orderOnGoing: TOrder[] | undefined;
+  orderFinished: TOrder[] | undefined;
+  isLoading: boolean;
+  errorTotal: string;
 };

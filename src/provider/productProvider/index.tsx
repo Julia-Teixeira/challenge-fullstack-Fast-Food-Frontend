@@ -7,9 +7,12 @@ import {
   ProductContextValues,
   TAdditionalList,
   TCategoryList,
+  TPaginationProduct,
   TProduct,
   TProductOrder,
   TProductOrderFormData,
+  TPaginationAdditional,
+  TPaginationCategory,
 } from "./interface";
 
 export const ProductContext = createContext({} as ProductContextValues);
@@ -25,6 +28,7 @@ export const ProductProvider = ({
 }) => {
   const [products, setProducts] = useState<TProduct[] | undefined>([]);
   const [categories, setCategories] = useState<TCategoryList[] | undefined>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [additionalProducts, setAdditionalProducts] = useState<
     TAdditionalList[] | undefined
   >([]);
@@ -34,36 +38,75 @@ export const ProductProvider = ({
   const [search, setSearch] = useState<TProduct[] | undefined>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectdProduct, setSelectedProduct] = useState<TProduct | undefined>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [isLoadingCategory, setIsLoadingCategory] = useState(true);
   const [productOrder, setProductOrder] = useState<TProductOrder[] | undefined>(
     []
   );
 
   const getProducts = async () => {
-    const { data } = await api.get<TProduct[]>("/products");
-    setProducts(data);
+    setIsLoadingProducts(true);
+    await api
+      .get<TPaginationProduct>("/products")
+      .then(({ data }) => {
+        setProducts(data.data);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoadingProducts(false));
+  };
+
+  const getProductsParams = async (category?: string, name?: string) => {
+    setIsLoadingProducts(true);
+    await api
+      .get<TPaginationProduct>("/products", {
+        params: {
+          category,
+          name,
+        },
+      })
+      .then(({ data }) => {
+        setSelectedProducts(data.data);
+        return data.data;
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoadingProducts(false));
   };
 
   const getAllCategories = async () => {
-    const { data } = await api.get<TCategoryList[]>("/categories");
-    setCategories(data);
+    setIsLoadingCategory(true);
+    await api
+      .get<TPaginationCategory>("/categories")
+      .then(({ data }): void => {
+        setCategories(data.data);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoadingCategory(false));
   };
 
   const getAllAdditionalProducts = async () => {
-    const { data } = await api.get<TAdditionalList[]>("/products/additional");
-    setAdditionalProducts(data);
+    await api
+      .get<TPaginationAdditional>("/additionals")
+      .then(({ data }) => {
+        setAdditionalProducts(data.data);
+      })
+      .catch((error) => console.error(error));
   };
 
   const createProductOrder = async (formData: TProductOrderFormData) => {
-    const { data } = await api.post<TProductOrder>("/productOrders", formData);
-
-    setProductOrder([...productOrder!, data]);
+    await api
+      .post<TProductOrder>("/productOrders", formData)
+      .then(({ data }) => {
+        setProductOrder([...productOrder!, data]);
+      })
+      .catch((error) => console.error(error));
   };
 
   const deleteProductOrder = async (id: number) => {
     await api
       .delete(`/productOrders/${id}`)
-
+      .then(() => {
+        setProductOrder(productOrder?.filter((item) => item.id !== id));
+      })
       .catch((error: AxiosError) => {
         console.error(error);
       });
@@ -82,7 +125,8 @@ export const ProductProvider = ({
       value={{
         products,
         setProducts,
-        isLoading,
+        isLoadingProducts,
+        isLoadingCategory,
         getProducts,
         categories,
         getAllCategories,
@@ -99,6 +143,9 @@ export const ProductProvider = ({
         productOrder,
         setProductOrder,
         deleteProductOrder,
+        setSelectedCategory,
+        selectedCategory,
+        getProductsParams,
       }}
     >
       {children}

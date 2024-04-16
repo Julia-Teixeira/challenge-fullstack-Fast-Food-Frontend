@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { paginationSchema } from "../interface";
 
 export const productSchema = z.object({
   id: z.number(),
@@ -52,17 +53,32 @@ export const productOrderSchema = productOrderFormDataSchema
       .nullish(),
   });
 
+const categoryPaginationSchema = paginationSchema.extend({
+  data: categoryListSchema.array(),
+});
+const additionalPaginationSchema = paginationSchema.extend({
+  data: additionalListSchema.array(),
+});
+const productPaginationSchema = paginationSchema.extend({
+  data: productSchema.array(),
+});
+
 export type TProduct = z.infer<typeof productSchema>;
 export type TCategoryList = z.infer<typeof categoryListSchema>;
 export type TAdditionalList = z.infer<typeof additionalListSchema>;
 export type TProductOrder = z.infer<typeof productOrderSchema>;
 export type TProductOrderFormData = z.infer<typeof productOrderFormDataSchema>;
 
+export type TPaginationCategory = z.infer<typeof categoryPaginationSchema>;
+export type TPaginationAdditional = z.infer<typeof additionalPaginationSchema>;
+export type TPaginationProduct = z.infer<typeof productPaginationSchema>;
+
 export interface ProductContextValues {
   products: TProduct[] | undefined;
   setProducts: React.Dispatch<React.SetStateAction<TProduct[] | undefined>>;
-  isLoading: boolean;
-  getProducts: () => Promise<void>;
+  isLoadingProducts: boolean;
+  isLoadingCategory: boolean;
+  getProducts: (category?: string) => Promise<TProduct[] | void>;
   categories: TCategoryList[] | undefined;
   getAllCategories: () => Promise<void>;
   selectedProducts: TProduct[] | undefined;
@@ -84,4 +100,10 @@ export interface ProductContextValues {
   >;
   createProductOrder: (formData: TProductOrderFormData) => Promise<void>;
   deleteProductOrder: (id: number) => Promise<void>;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
+  selectedCategory: string;
+  getProductsParams: (
+    category?: string,
+    name?: string
+  ) => Promise<void | TProduct[]>;
 }

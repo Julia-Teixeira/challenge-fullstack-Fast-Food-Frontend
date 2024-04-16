@@ -3,10 +3,8 @@ import CategoryList from "@/components/categoryList";
 import ModalAddOrder from "@/components/modalAddOrder";
 import ProductList from "@/components/productList";
 import Search from "@/components/search";
-
 import { useProduct } from "@/provider/productProvider";
 import { useRouter } from "next/navigation";
-
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 
 export default function Home() {

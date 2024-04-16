@@ -1,23 +1,26 @@
 "use client";
 
 import { useProduct } from "@/provider/productProvider";
-import { TProduct } from "@/provider/productProvider/interface";
 import { useState } from "react";
 
 const Search = () => {
-  const { setSelectedProducts, products, selectedProducts } = useProduct();
+  const {
+    setSelectedProducts,
+    selectedProducts,
+    setSelectedCategory,
+    getProductsParams,
+  } = useProduct();
   const [search, setSearch] = useState<string>("");
-  const handleSearch = (search: string) => {
-    const filter: TProduct[] | undefined = products?.filter(
-      (product: TProduct) =>
-        product.name.toLowerCase().includes(search.toLowerCase()) ||
-        product.id === Number(search)
-    );
-
-    setSelectedProducts(filter);
+  const handleSearch = async (name: string) => {
+    await getProductsParams(undefined, name)
+      .then(() => {
+        setSelectedCategory("");
+      })
+      .catch((error) => console.error(error));
   };
   const clearFilter = () => {
     setSearch("");
+    setSelectedCategory("");
     setSelectedProducts(undefined);
   };
   return (
